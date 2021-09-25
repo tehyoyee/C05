@@ -1,4 +1,16 @@
-int ft_is_prime(int nb)
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_find_next_prime.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: taehykim <taehykim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/25 17:54:54 by taehykim          #+#    #+#             */
+/*   Updated: 2021/09/25 17:55:54 by taehykim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+int	ft_is_prime(int nb)
 {
 	int			i;
 	long long	root;
@@ -16,14 +28,14 @@ int ft_is_prime(int nb)
 	return (1);
 }
 
-int ft_find_next_prime(int nb)
+int	ft_find_next_prime(int nb)
 {
-	int i;
+	int	i;
 
 	if (nb <= 2)
 		return (2);
 	i = nb;
-	while(1)
+	while (1)
 	{
 		if (ft_is_prime(i))
 			return (i);

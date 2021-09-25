@@ -1,137 +1,72 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_ten_queens_puzzle.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: taehykim <taehykim@student.42seoul.kr      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/22 14:41:09 by taehykim          #+#    #+#             */
+/*   Updated: 2021/09/25 18:03:24 by taehykim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include <unistd.h>
-#include <stdio.h>
 
-void	init(int (*arr)[10], int *path);
-void	ft_print_path(int *path);
-void	recursive(int (*arr)[10], int i, int j, int *path);
-void	sort_path(int (*arr)[10], int i, int j);
-void	ft_ten_queens_puzzle();
-
-void	init(int (*arr)[10], int *path)
+int	check(int *pos, int i)
 {
-	int	i;
 	int	j;
 
-	i = 0;
 	j = 0;
-	while (i < 10)
+	while (j < i)
 	{
-		path[i] = -1;
-		i++;
+		if (pos[i] == pos[j])
+			return (0);
+		if (i - j == pos[i] - pos[j])
+			return (0);
+		if (i - j == -pos[i] + pos[j])
+			return (0);
+		j++;
 	}
-	i = 0;
-	while (i < 10)
-	{
-		j = 0;
-		while (j < 10)
-		{
-			arr[i][j] = 0;
-			j ++;
-		}
-		i++;
-	}
+	return (1);
 }
 
-void	ft_print_path(int *path)
+void	ft_print(int *pos)
 {
-	int	i;
-	char c;
+	int		i;
+	char	index;
 
-	while(i < 10)
+	i = 0;
+	while (i < 10)
 	{
-		c = path[i] + 48;
-		write(1, &c, 1);
+		index = pos[i] + '0';
+		write(1, &index, 1);
 		i++;
 	}
 	write(1, "\n", 1);
 }
 
-void	recursive(int (*arr)[10], int i, int j, int *path)
+void	ft_ten_queens(int *pos, int i, int cur, int *result)
 {
-	j = 0;
-	int	k;
-
-	k = 0;
 	if (i == 10)
 	{
-		ft_print_path(path);
+		ft_print(pos);
+		(*result)++;
 		return ;
 	}
-
-	while (j < 10)
+	while (cur < 10)
 	{
-//		write(1, "\n", 1);
-//		printf("\ni = %d / j = %d \n", i, j);
-//		ft_print_path(path);
-
-		path[i] = j;
-		if (arr[i][j] == 1)
-		{
-			if (j == 10)
-				return ;
-			return ;
-		}
-		arr[i][j] = 1;
-		sort_path(arr, i, j);
-		
-		printf("\n");
-		for (int m = 0; m < 10; m++)
-		{
-			for (int n = 0; n < 10; n++)
-				printf("%d", arr[m][n]);
-			printf("\n");
-		}
-		for (int n = 0; n < 10; n++)
-				printf("%d", path[n]);
-			printf("\n");
-
-		recursive(arr, i + 1, j, path);		
-		j++;
+		pos[i] = cur;
+		if (check(pos, i) == 1)
+			ft_ten_queens(pos, i + 1, 0, result);
+		cur++;
 	}
 }
 
-void	sort_path(int (*arr)[10], int i, int j)
+int	ft_ten_queens_puzzle(void)
 {
-	int	k;
+	int	pos[10];
+	int	result;
 
-	k = 0;
-	while (k < 10)
-	{
-		arr[k][j] = 1;
-		arr[i][k] = 1;
-		if (i - k >= 0 && j - k >= 0)
-			arr[i - k][j - k] = 1;
-		if (i + k <= 9 && j - k >= 0)
-			arr[i + k][j - k] = 1;
-		if (i - k >= 0 && j + k <= 9)
-			arr[i - k][j + k] = 1;
-		if (i + k <= 9 && j + k <= 9)
-			arr[i + k][j + k] = 1;
-		k++;
-	}
-}
-
-void	ft_ten_queens_puzzle()
-{
-	int	arr[10][10];
-	int	path[10];
-
-
-	init(arr, path);
-	recursive(arr, 0, 0, path);
-/*	recursive(arr, 0, 1, path);
-	recursive(arr, 0, 2, path);
-	recursive(arr, 0, 3, path);
-	recursive(arr, 0, 4, path);
-	recursive(arr, 0, 5, path);
-	recursive(arr, 0, 6, path);
-	recursive(arr, 0, 7, path);
-	recursive(arr, 0, 8, path);
-*/
-}
-
-int	main(void)
-{
-
-	ft_ten_queens_puzzle();
+	result = 0;
+	ft_ten_queens(pos, 0, 0, &result);
+	return (result);
 }
